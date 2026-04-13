@@ -1,38 +1,1227 @@
-.App {
-  text-align: center;
+:root {
+  --bg: #0b1020;
+  --navBg: #0b3a2b;
+  --navBg2: #0b1730;
+  --surface: rgba(255, 255, 255, 0.06);
+  --surface2: rgba(255, 255, 255, 0.09);
+  --border: rgba(255, 255, 255, 0.12);
+  --text: rgba(255, 255, 255, 0.92);
+  --muted: rgba(255, 255, 255, 0.68);
+  --muted2: rgba(255, 255, 255, 0.55);
+  --brand: #22c55e;
+  --brand2: #06b6d4;
+  --gold: #fbbf24;
+  --purple: #a855f7;
+  --cyan: #22d3ee;
+  --shadow: 0 18px 40px rgba(0, 0, 0, 0.35);
+  --radius: 16px;
 }
 
-.App-logo {
-  height: 40vmin;
+.App {
+  color: var(--text);
+  min-height: 100vh;
+}
+
+.Shell {
+  max-width: 1180px;
+  margin: 0 auto;
+  padding: 22px 18px 46px;
+}
+
+.TopNav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  gap: 14px;
+  align-items: center;
+  padding: 14px 14px;
+  border: 1px solid var(--border);
+  border-radius: calc(var(--radius) + 2px);
+  background: linear-gradient(135deg, rgba(11, 58, 43, 0.95), rgba(11, 23, 48, 0.85));
+  backdrop-filter: blur(12px);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+}
+
+.Brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.BrandLogoWrap {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  overflow: hidden;
+}
+
+.BrandLogo {
+  width: 44px;
+  height: 44px;
+  object-fit: cover;
+}
+
+.BrandText {
+  min-width: 0;
+}
+
+.BrandName {
+  font-weight: 700;
+  letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.BrandTag {
+  color: var(--muted2);
+  font-size: 12px;
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.NavLinks {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  padding: 0 8px;
+}
+
+.NavLinks a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13px;
+  padding: 9px 10px;
+  border-radius: 12px;
+  transition: background 160ms ease, color 160ms ease, transform 160ms ease;
+}
+
+.NavLinks a:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.NavActions {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.Hamburger {
+  display: none;
+  width: 44px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+  cursor: pointer;
+  padding: 0;
+  transition: background 160ms ease, border-color 160ms ease, transform 160ms ease;
+}
+
+.Hamburger:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.Hamburger:active {
+  transform: translateY(1px);
+}
+
+.HamburgerLines {
+  width: 18px;
+  height: 14px;
+  display: grid;
+  gap: 3px;
+  margin: 0 auto;
+}
+
+.HamburgerLines span {
+  display: block;
+  height: 2px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.9);
+}
+
+.MobileMenu {
+  position: fixed;
+  inset: 0;
+  z-index: 80;
   pointer-events: none;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
+.MobileMenu.isOpen {
+  pointer-events: auto;
 }
 
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.MobileBackdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  border: none;
+  padding: 0;
+  opacity: 0;
+  transition: opacity 220ms ease;
+}
+
+.MobileMenu.isOpen .MobileBackdrop {
+  opacity: 1;
+}
+
+.MobilePanel {
+  position: absolute;
+  right: 12px;
+  top: 12px;
+  width: min(360px, calc(100vw - 24px));
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(11, 16, 32, 0.92);
+  backdrop-filter: blur(14px);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.55);
+  transform: translateY(-6px) scale(0.98);
+  opacity: 0;
+  transition: transform 220ms ease, opacity 220ms ease;
+}
+
+.MobileMenu.isOpen .MobilePanel {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+}
+
+.MobileHeader {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 14px 14px 10px;
+}
+
+.MobileBrand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.MobileLogo {
+  width: 40px;
+  height: 40px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  object-fit: cover;
+}
+
+.MobileClose {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.9);
+  cursor: pointer;
+}
+
+.MobileLinks {
+  display: grid;
+  padding: 8px 10px 10px;
+  gap: 6px;
+}
+
+.MobileLinks a {
+  color: rgba(255, 255, 255, 0.92);
+  text-decoration: none;
+  font-weight: 900;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.MobileLinks a:hover {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.MobileCta {
+  padding: 0 14px 14px;
+}
+
+.Button {
+  display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  gap: 8px;
+  height: 40px;
+  padding: 0 14px;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  text-decoration: none;
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 0.2px;
+  cursor: pointer;
+  transition: transform 160ms ease, box-shadow 160ms ease, background 160ms ease, border-color 160ms ease;
+  user-select: none;
 }
 
-.App-link {
-  color: #61dafb;
+.Button:active {
+  transform: translateY(1px);
 }
 
-@keyframes App-logo-spin {
+.ButtonPrimary {
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(6, 182, 212, 0.95));
+  color: rgba(7, 11, 24, 0.92);
+  box-shadow: 0 16px 26px rgba(6, 182, 212, 0.18), 0 16px 26px rgba(34, 197, 94, 0.16);
+}
+
+.ButtonPrimary:hover {
+  box-shadow: 0 18px 34px rgba(6, 182, 212, 0.22), 0 18px 34px rgba(34, 197, 94, 0.18);
+}
+
+.ButtonGhost {
+  color: var(--text);
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.ButtonGhost:hover {
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.ButtonFull {
+  width: 100%;
+}
+
+.Main {
+  padding-top: 18px;
+}
+
+.Hero2 {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: calc(var(--radius) + 6px);
+  box-shadow: var(--shadow);
+  margin-top: 8px;
+}
+
+.Hero2Bg {
+  position: absolute;
+  inset: 0;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  transform: scale(1.02);
+  filter: saturate(1.05);
+}
+
+.Hero2Overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(900px 520px at 18% 10%, rgba(34, 197, 94, 0.16), transparent 60%),
+    radial-gradient(800px 520px at 88% 0%, rgba(34, 211, 238, 0.12), transparent 62%),
+    linear-gradient(180deg, rgba(11, 16, 32, 0.55), rgba(11, 16, 32, 0.86));
+}
+
+.Hero2Inner {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1.3fr 0.7fr;
+  gap: 14px;
+  padding: 22px;
+}
+
+.Hero2Content {
+  padding: 6px 0;
+}
+
+.Hero2Title {
+  margin: 14px 0 0;
+  font-size: 44px;
+  line-height: 1.02;
+  letter-spacing: -0.7px;
+}
+
+.Hero2Subtitle {
+  margin: 12px 0 0;
+  color: var(--muted);
+  font-size: 15px;
+  line-height: 1.7;
+  max-width: 58ch;
+}
+
+.Hero2Ctas {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 16px;
+}
+
+.Hero2Badges {
+  margin-top: 18px;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.Badge {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.06);
+  transform: translateZ(0);
+}
+
+.BadgeIcon {
+  width: 34px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.BadgeTitle {
+  font-weight: 900;
+  font-size: 12px;
+}
+
+.BadgeText {
+  margin-top: 2px;
+  color: var(--muted2);
+  font-size: 12px;
+}
+
+.Hero2Side {
+  display: grid;
+  align-content: start;
+}
+
+.Pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 8px 10px;
+  border-radius: 999px;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.86);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.Cards4 {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.CardHover {
+  transition: transform 180ms ease, background 180ms ease, border-color 180ms ease;
+}
+
+.CardHover:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.CardTop {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.IconBubble {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: grid;
+  place-items: center;
+  font-size: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.06);
+  animation: iconFloat 5.6s ease-in-out infinite;
+}
+
+.IconBubble.brand {
+  background: rgba(34, 197, 94, 0.14);
+  border-color: rgba(34, 197, 94, 0.24);
+}
+
+.IconBubble.cyan {
+  background: rgba(34, 211, 238, 0.12);
+  border-color: rgba(34, 211, 238, 0.22);
+}
+
+.IconBubble.purple {
+  background: rgba(168, 85, 247, 0.12);
+  border-color: rgba(168, 85, 247, 0.22);
+}
+
+.IconBubble.gold {
+  background: rgba(251, 191, 36, 0.12);
+  border-color: rgba(251, 191, 36, 0.22);
+}
+
+@keyframes iconFloat {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.AboutSplit {
+  align-items: stretch;
+}
+
+.Lead {
+  font-size: 14px;
+}
+
+.AboutPoints {
+  margin-top: 14px;
+  display: grid;
+  gap: 10px;
+}
+
+.Point {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.PointTitle {
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.PointText {
+  margin-top: 2px;
+  color: var(--muted2);
+  font-size: 12px;
+}
+
+.AboutMedia {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(520px 220px at 25% 20%, rgba(34, 197, 94, 0.20), transparent 60%),
+    radial-gradient(520px 220px at 80% 40%, rgba(34, 211, 238, 0.14), transparent 60%),
+    radial-gradient(520px 240px at 60% 100%, rgba(168, 85, 247, 0.14), transparent 65%),
+    rgba(255, 255, 255, 0.04);
+}
+
+.MediaFrame {
+  position: absolute;
+  inset: 14px;
+  border-radius: calc(var(--radius) + 6px);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(7, 11, 24, 0.35);
+  backdrop-filter: blur(10px);
+  padding: 16px;
+  display: grid;
+  align-content: end;
+}
+
+.MediaBadge {
+  justify-self: start;
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.MediaTitle {
+  margin-top: 10px;
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: -0.3px;
+}
+
+.MediaSub {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.WhyGrid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.WhyItem {
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 10px;
+  align-items: center;
+  padding: 14px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow);
+  transition: transform 180ms ease;
+}
+
+.WhyItem:hover {
+  transform: translateY(-2px);
+}
+
+.WhyTitle {
+  font-weight: 900;
+  font-size: 14px;
+}
+
+.WhyText {
+  margin-top: 4px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+}
+
+.GalleryGrid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.GalleryItem {
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  box-shadow: var(--shadow);
+  aspect-ratio: 1 / 1;
+  transition: transform 200ms ease, filter 200ms ease;
+}
+
+.GalleryItem:hover {
+  transform: translateY(-2px);
+  filter: brightness(1.05);
+}
+
+.GalleryImg {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.02);
+  transition: transform 320ms ease, filter 320ms ease;
+  filter: saturate(1.02) contrast(1.02);
+}
+
+.GalleryItem::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.55));
+  opacity: 0.95;
+  pointer-events: none;
+}
+
+.GalleryItem:hover .GalleryImg {
+  transform: scale(1.06);
+  filter: saturate(1.08) contrast(1.06);
+}
+
+.GalleryLabel {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 12px;
+  padding: 10px 10px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(7, 11, 24, 0.60);
+  backdrop-filter: blur(10px);
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.EventTop {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.EventDate {
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.EventTitle {
+  margin-top: 10px;
+  font-weight: 900;
+  font-size: 15px;
+}
+
+.EventMeta {
+  margin-top: 6px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.Quote {
+  position: relative;
+}
+
+.Cards4 .CardHover,
+#testimonials .Quote {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: fadeUp 640ms ease forwards;
+}
+
+.Cards4 .CardHover:nth-child(1) {
+  animation-delay: 60ms;
+}
+.Cards4 .CardHover:nth-child(2) {
+  animation-delay: 140ms;
+}
+.Cards4 .CardHover:nth-child(3) {
+  animation-delay: 220ms;
+}
+.Cards4 .CardHover:nth-child(4) {
+  animation-delay: 300ms;
+}
+
+#testimonials .Quote:nth-child(1) {
+  animation-delay: 80ms;
+}
+#testimonials .Quote:nth-child(2) {
+  animation-delay: 160ms;
+}
+#testimonials .Quote:nth-child(3) {
+  animation-delay: 240ms;
+}
+
+@keyframes fadeUp {
   from {
-    transform: rotate(0deg);
+    opacity: 0;
+    transform: translateY(10px);
   }
   to {
-    transform: rotate(360deg);
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .Cards4 .CardHover,
+  #testimonials .Quote,
+  .IconBubble {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+    opacity: 1 !important;
+  }
+}
+
+.QuoteText {
+  font-weight: 800;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.QuoteMeta {
+  margin-top: 10px;
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.Card {
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius);
+  background: rgba(255, 255, 255, 0.05);
+  box-shadow: var(--shadow);
+  padding: 16px;
+}
+
+.CardGlow {
+  background:
+    radial-gradient(320px 120px at 20% 0%, rgba(34, 197, 94, 0.22), transparent 60%),
+    radial-gradient(320px 120px at 80% 0%, rgba(6, 182, 212, 0.18), transparent 60%),
+    rgba(255, 255, 255, 0.05);
+}
+
+.CardTitle {
+  font-weight: 900;
+  letter-spacing: 0.2px;
+}
+
+.CardText {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.55;
+  margin-top: 8px;
+}
+
+.CardRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.CardMeta {
+  color: var(--muted2);
+  font-size: 12px;
+  text-align: right;
+}
+
+.CardStrong {
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.Divider {
+  height: 1px;
+  background: rgba(255, 255, 255, 0.12);
+  margin: 12px 0;
+}
+
+.Chip {
+  display: inline-flex;
+  align-items: center;
+  height: 26px;
+  padding: 0 10px;
+  border-radius: 999px;
+  font-weight: 900;
+  font-size: 12px;
+  letter-spacing: 0.2px;
+  background: rgba(34, 197, 94, 0.18);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  color: rgba(255, 255, 255, 0.88);
+  white-space: nowrap;
+}
+
+.ChipAlt {
+  background: rgba(6, 182, 212, 0.14);
+  border-color: rgba(6, 182, 212, 0.24);
+}
+
+.Grid2 {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.Mini {
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.MiniLabel {
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.MiniValue {
+  margin-top: 6px;
+  font-weight: 900;
+  font-size: 13px;
+}
+
+.Section {
+  margin-top: 18px;
+}
+
+.SectionHeader {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 16px 2px 10px;
+}
+
+.SectionTitle {
+  margin: 0;
+  font-size: 18px;
+  letter-spacing: -0.2px;
+}
+
+.SectionSubtitle {
+  margin: 0;
+  color: var(--muted2);
+  font-size: 13px;
+}
+
+.Cards3 {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.Split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.List {
+  margin: 10px 0 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+
+.InlineLink {
+  display: inline-block;
+  margin-top: 10px;
+  color: rgba(255, 255, 255, 0.9);
+  text-decoration: none;
+  font-weight: 800;
+}
+
+.InlineLink:hover {
+  text-decoration: underline;
+}
+
+.Table {
+  display: grid;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.Row {
+  display: grid;
+  grid-template-columns: 0.75fr 1fr 1fr 1fr;
+  gap: 10px;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.Row.Head {
+  background: rgba(255, 255, 255, 0.06);
+  color: rgba(255, 255, 255, 0.86);
+  font-weight: 900;
+}
+
+.Hint {
+  margin-top: 10px;
+  color: var(--muted2);
+  font-size: 12px;
+  line-height: 1.55;
+}
+
+.Form {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.Field span {
+  display: block;
+  color: var(--muted2);
+  font-weight: 800;
+  font-size: 12px;
+  margin-bottom: 6px;
+}
+
+.Field input,
+.Field select,
+.Field textarea {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(7, 11, 24, 0.5);
+  color: var(--text);
+  outline: none;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.Field input:focus,
+.Field select:focus,
+.Field textarea:focus {
+  border-color: rgba(34, 197, 94, 0.45);
+  background: rgba(7, 11, 24, 0.65);
+}
+
+.InfoList {
+  margin-top: 10px;
+  display: grid;
+  gap: 10px;
+}
+
+.InfoItem {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.InfoLabel {
+  color: var(--muted2);
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.InfoValue {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: 12px;
+  font-weight: 800;
+  text-align: right;
+}
+
+.Footer {
+  margin-top: 18px;
+  padding-top: 14px;
+}
+
+.FooterInner {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 14px 12px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.FooterMeta {
+  margin-top: 4px;
+  font-size: 12px;
+  color: var(--muted2);
+}
+
+.FooterBrandRow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.FooterDesc {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 12px;
+  max-width: 44ch;
+  line-height: 1.6;
+}
+
+.FooterLogo {
+  width: 34px;
+  height: 34px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(255, 255, 255, 0.08);
+  object-fit: cover;
+}
+
+.FooterRight {
+  display: flex;
+  gap: 12px;
+}
+
+.FooterSocial {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.SocialLink {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.SocialLink:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+.FooterRight a {
+  color: var(--muted);
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 8px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.FooterRight a:hover {
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 980px) {
+  .TopNav {
+    grid-template-columns: 1fr auto;
+  }
+
+  .NavLinks {
+    display: none;
+  }
+
+  .Hamburger {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .Hero2Inner {
+    grid-template-columns: 1fr;
+  }
+
+  .Hero2Badges {
+    grid-template-columns: 1fr;
+  }
+
+  .Cards3 {
+    grid-template-columns: 1fr;
+  }
+
+  .Cards4 {
+    grid-template-columns: 1fr;
+  }
+
+  .WhyGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .GalleryGrid {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .Split {
+    grid-template-columns: 1fr;
+  }
+
+  .Row {
+    grid-template-columns: 1fr;
+  }
+
+  .FooterInner {
+    grid-template-columns: 1fr;
+    justify-items: start;
+  }
+
+  .FooterSocial {
+    justify-content: flex-start;
+  }
+}
+
+@media (max-width: 520px) {
+  .Shell {
+    padding: 14px 12px 34px;
+  }
+
+  .TopNav {
+    padding: 12px 12px;
+    gap: 10px;
+  }
+
+  .BrandName {
+    font-size: 13px;
+  }
+
+  .BrandTag {
+    font-size: 11px;
+  }
+
+  .NavActions .Button {
+    height: 38px;
+    padding: 0 12px;
+  }
+
+  .Hero2Inner {
+    padding: 16px;
+  }
+
+  .Hero2Title {
+    font-size: 30px;
+  }
+
+  .Hero2Subtitle {
+    font-size: 14px;
+  }
+
+  .Hero2Ctas {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .Hero2Ctas .Button {
+    width: 100%;
+  }
+
+  .SectionHeader {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+  }
+
+  .GalleryGrid {
+    grid-template-columns: 1fr;
+  }
+
+  .FooterRight {
+    flex-wrap: wrap;
+  }
+
+  .FooterSocial {
+    flex-wrap: wrap;
+    justify-content: flex-start;
   }
 }
