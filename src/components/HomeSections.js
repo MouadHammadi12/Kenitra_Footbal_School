@@ -46,7 +46,11 @@ export default function HomeSections() {
               </div>
             </div>
           </div>
-          <div className="Card AboutMedia" aria-label="About image">
+          <div
+            className="Card AboutMedia"
+            style={{ backgroundImage: "url('/about-bg.png')" }}
+            aria-label="About image"
+          >
             <div className="MediaFrame">
               <div className="MediaBadge">KFS • EST 2026</div>
               <div className="MediaTitle">Training culture</div>
@@ -151,6 +155,10 @@ export default function HomeSections() {
           <figure className="GalleryItem" aria-label="Team Spirit">
             <img className="GalleryImg" src="/gallery/training-4.png" alt="Football action shot" />
             <figcaption className="GalleryLabel">Team Spirit</figcaption>
+          </figure>
+          <figure className="GalleryItem" aria-label="Highlights">
+            <img className="GalleryImg" src="/gallery/training-5.png" alt="Football energy highlight" />
+            <figcaption className="GalleryLabel">Highlights</figcaption>
           </figure>
         </div>
       </section>
