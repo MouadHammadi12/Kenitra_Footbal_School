@@ -21,9 +21,6 @@
 
 .App {
   color: var(--text);
-  background: radial-gradient(1200px 600px at 10% -10%, rgba(14, 165, 233, 0.14), transparent 55%),
-    radial-gradient(900px 520px at 90% 0%, rgba(22, 163, 74, 0.12), transparent 55%),
-    var(--bg);
   min-height: 100vh;
 }
 
@@ -44,9 +41,10 @@
   padding: 14px 14px;
   border: 1px solid var(--border);
   border-radius: calc(var(--radius) + 2px);
-  background: rgba(8, 71, 110, 0.78);
+  background: linear-gradient(135deg, rgba(11, 58, 43, 0.95), rgba(11, 23, 48, 0.85));
   backdrop-filter: blur(12px);
-  box-shadow: var(--shadow);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .Brand {
@@ -54,6 +52,8 @@
   align-items: center;
   gap: 12px;
   min-width: 0;
+  text-decoration: none;
+  color: inherit;
 }
 
 .BrandLogoWrap {
@@ -62,8 +62,8 @@
   border-radius: 14px;
   display: grid;
   place-items: center;
-  background: rgba(255, 255, 255, 0.9);
-  border: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.14);
   overflow: hidden;
 }
 
@@ -83,10 +83,11 @@
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  color: rgba(255, 255, 255, 0.96);
 }
 
 .BrandTag {
-  color: var(--muted2);
+  color: rgba(255, 255, 255, 0.72);
   font-size: 12px;
   margin-top: 2px;
   white-space: nowrap;
@@ -102,7 +103,7 @@
 }
 
 .NavLinks a {
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.84);
   text-decoration: none;
   font-weight: 600;
   font-size: 13px;
@@ -112,8 +113,8 @@
 }
 
 .NavLinks a:hover {
-  color: var(--text);
-  background: rgba(15, 23, 42, 0.06);
+  color: rgba(255, 255, 255, 0.98);
+  background: rgba(255, 255, 255, 0.08);
 }
 
 .NavActions {
@@ -284,24 +285,24 @@
 }
 
 .ButtonPrimary {
-  background: linear-gradient(135deg, rgba(22, 163, 74, 0.96), rgba(14, 165, 233, 0.96));
-  color: white;
-  box-shadow: 0 16px 26px rgba(14, 165, 233, 0.16), 0 16px 26px rgba(22, 163, 74, 0.12);
+  background: linear-gradient(135deg, rgba(34, 197, 94, 0.95), rgba(6, 182, 212, 0.95));
+  color: rgba(7, 11, 24, 0.92);
+  box-shadow: 0 16px 26px rgba(6, 182, 212, 0.18), 0 16px 26px rgba(34, 197, 94, 0.16);
 }
 
 .ButtonPrimary:hover {
-  box-shadow: 0 18px 34px rgba(14, 165, 233, 0.18), 0 18px 34px rgba(22, 163, 74, 0.14);
+  box-shadow: 0 18px 34px rgba(6, 182, 212, 0.22), 0 18px 34px rgba(34, 197, 94, 0.18);
 }
 
 .ButtonGhost {
   color: var(--text);
-  border-color: var(--border);
-  background: rgba(255, 255, 255, 0.78);
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.06);
 }
 
 .ButtonGhost:hover {
-  background: rgba(15, 23, 42, 0.04);
-  border-color: rgba(15, 23, 42, 0.12);
+  background: rgba(255, 255, 255, 0.09);
+  border-color: rgba(255, 255, 255, 0.22);
 }
 
 .ButtonFull {
@@ -315,10 +316,11 @@
 .Hero2 {
   position: relative;
   overflow: hidden;
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: calc(var(--radius) + 6px);
-  box-shadow: var(--shadow2);
+  box-shadow: var(--shadow);
   margin-top: 8px;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .Hero2Bg {
@@ -335,9 +337,9 @@
   position: absolute;
   inset: 0;
   background:
-    radial-gradient(900px 520px at 18% 10%, rgba(22, 163, 74, 0.14), transparent 60%),
-    radial-gradient(800px 520px at 88% 0%, rgba(14, 165, 233, 0.12), transparent 62%),
-    linear-gradient(180deg, rgba(2, 6, 23, 0.18), rgba(2, 6, 23, 0.68));
+    radial-gradient(900px 520px at 18% 10%, rgba(34, 197, 94, 0.16), transparent 60%),
+    radial-gradient(800px 520px at 88% 0%, rgba(34, 211, 238, 0.12), transparent 62%),
+    linear-gradient(180deg, rgba(11, 16, 32, 0.55), rgba(11, 16, 32, 0.86));
 }
 
 .Hero2Inner {
@@ -361,7 +363,7 @@
 
 .Hero2Subtitle {
   margin: 12px 0 0;
-  color: var(--muted);
+  color: rgba(255, 255, 255, 0.84);
   font-size: 15px;
   line-height: 1.7;
   max-width: 58ch;
@@ -372,17 +374,6 @@
   gap: 10px;
   flex-wrap: wrap;
   margin-top: 16px;
-  align-items: stretch;
-}
-
-.Hero2Ctas .Button {
-  justify-content: center;
-}
-
-@media (max-width: 980px) {
-  .Hero2Ctas {
-    width: min(420px, 100%);
-  }
 }
 
 .Hero2Badges {
@@ -420,7 +411,7 @@
 
 .BadgeText {
   margin-top: 2px;
-  color: var(--muted2);
+  color: rgba(255, 255, 255, 0.75);
   font-size: 12px;
 }
 
@@ -546,22 +537,11 @@
 .AboutMedia {
   position: relative;
   overflow: hidden;
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  background-color: rgba(255, 255, 255, 0.04);
-  aspect-ratio: 16 / 10;
-}
-
-.AboutMedia::before {
-  content: "";
-  position: absolute;
-  inset: 0;
   background:
-    radial-gradient(520px 260px at 20% 10%, rgba(34, 197, 94, 0.14), transparent 64%),
-    radial-gradient(520px 260px at 90% 20%, rgba(34, 211, 238, 0.10), transparent 66%),
-    linear-gradient(180deg, rgba(11, 16, 32, 0.18), rgba(11, 16, 32, 0.80));
-  pointer-events: none;
+    radial-gradient(520px 220px at 25% 20%, rgba(34, 197, 94, 0.20), transparent 60%),
+    radial-gradient(520px 220px at 80% 40%, rgba(34, 211, 238, 0.14), transparent 60%),
+    radial-gradient(520px 240px at 60% 100%, rgba(168, 85, 247, 0.14), transparent 65%),
+    rgba(255, 255, 255, 0.04);
 }
 
 .MediaFrame {
@@ -569,8 +549,8 @@
   inset: 14px;
   border-radius: calc(var(--radius) + 6px);
   border: 1px solid rgba(255, 255, 255, 0.12);
-  background: rgba(7, 11, 24, 0.22);
-  backdrop-filter: blur(8px);
+  background: rgba(7, 11, 24, 0.35);
+  backdrop-filter: blur(10px);
   padding: 16px;
   display: grid;
   align-content: end;
@@ -640,7 +620,7 @@
 
 .GalleryGrid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 12px;
 }
 
@@ -795,23 +775,24 @@
 }
 
 .Card {
-  border: 1px solid var(--border);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   border-radius: var(--radius);
-  background: var(--surface);
+  background: rgba(255, 255, 255, 0.05);
   box-shadow: var(--shadow);
   padding: 16px;
 }
 
 .CardGlow {
   background:
-    radial-gradient(320px 120px at 20% 0%, rgba(22, 163, 74, 0.14), transparent 60%),
-    radial-gradient(320px 120px at 80% 0%, rgba(14, 165, 233, 0.12), transparent 60%),
-    rgba(255, 255, 255, 0.86);
+    radial-gradient(320px 120px at 20% 0%, rgba(34, 197, 94, 0.22), transparent 60%),
+    radial-gradient(320px 120px at 80% 0%, rgba(6, 182, 212, 0.18), transparent 60%),
+    rgba(255, 255, 255, 0.05);
 }
 
 .CardTitle {
   font-weight: 900;
   letter-spacing: 0.2px;
+  color: rgba(11, 18, 32, 0.9);
 }
 
 .CardText {
@@ -894,7 +875,6 @@
 
 .Section {
   margin-top: 18px;
-  scroll-margin-top: 96px;
 }
 
 .SectionHeader {
@@ -909,12 +889,14 @@
   margin: 0;
   font-size: 18px;
   letter-spacing: -0.2px;
+  color: rgba(11, 18, 32, 0.92);
 }
 
 .SectionSubtitle {
   margin: 0;
   color: var(--muted2);
   font-size: 13px;
+  line-height: 1.5;
 }
 
 .Cards3 {
@@ -969,7 +951,7 @@
 
 .Row.Head {
   background: rgba(255, 255, 255, 0.06);
-  color: rgba(255, 255, 255, 0.86);
+  color: rgba(11, 18, 32, 0.86);
   font-weight: 900;
 }
 
@@ -1152,15 +1134,6 @@
     grid-template-columns: 1fr;
   }
 
-  .Hero2Ctas {
-    display: grid;
-    grid-template-columns: 1fr;
-  }
-
-  .Hero2Ctas .Button {
-    width: 100%;
-  }
-
   .Hero2Badges {
     grid-template-columns: 1fr;
   }
@@ -1200,30 +1173,6 @@
 }
 
 @media (max-width: 520px) {
-  .AboutSplit {
-    align-items: start;
-  }
-
-  .AboutMedia {
-    min-height: 220px;
-    aspect-ratio: 16 / 11;
-  }
-
-  .MediaFrame {
-    inset: auto;
-    left: 12px;
-    right: 12px;
-    bottom: 12px;
-    top: auto;
-    padding: 14px;
-    border-radius: calc(var(--radius) + 2px);
-    background: rgba(7, 11, 24, 0.28);
-  }
-
-  .Section {
-    scroll-margin-top: 86px;
-  }
-
   .Shell {
     padding: 14px 12px 34px;
   }
@@ -1261,29 +1210,10 @@
   .Hero2Ctas {
     display: grid;
     grid-template-columns: 1fr;
-    width: 100%;
-    max-width: 340px;
-    margin-left: auto;
-    margin-right: auto;
-    justify-items: center;
   }
 
   .Hero2Ctas .Button {
     width: 100%;
-    height: 44px;
-    font-size: 14px;
-    border-radius: 14px;
-    letter-spacing: 0.1px;
-    text-align: center;
-  }
-
-  .Hero2Ctas .ButtonPrimary {
-    box-shadow: 0 16px 30px rgba(0, 0, 0, 0.35);
-  }
-
-  .Hero2Ctas .ButtonGhost {
-    background: rgba(255, 255, 255, 0.10);
-    border-color: rgba(255, 255, 255, 0.20);
   }
 
   .SectionHeader {
@@ -1302,6 +1232,228 @@
 
   .FooterSocial {
     flex-wrap: wrap;
+    justify-content: flex-start;
+  }
+}
+
+.Hint a {
+  color: rgba(34, 197, 94, 0.95);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.Hint a:hover {
+  text-decoration: underline;
+}
+
+.InscriptionCard {
+  max-width: 560px;
+  margin: 0 auto;
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(15, 23, 42, 0.1);
+}
+
+.FormNotice {
+  margin: 0;
+  padding: 10px 12px;
+  border-radius: 12px;
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.FormNoticeOk {
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  background: rgba(34, 197, 94, 0.12);
+  color: rgba(11, 18, 32, 0.92);
+}
+
+.FormNoticeErr {
+  border: 1px solid rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.12);
+  color: rgba(11, 18, 32, 0.92);
+}
+
+.InscriptionCard .InlineCode {
+  font-size: 12px;
+}
+
+.InlineCode {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+  font-size: 0.92em;
+  padding: 1px 6px;
+  border-radius: 8px;
+  background: rgba(11, 18, 32, 0.06);
+  border: 1px solid rgba(15, 23, 42, 0.1);
+}
+
+.AdminCard {
+  max-width: 100%;
+}
+
+.AdminToolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.AdminSignedIn {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+}
+
+.AdminTableWrap {
+  display: grid;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.AdminRow {
+  align-items: center;
+  grid-template-columns: 1fr;
+  gap: 8px;
+  color: rgba(11, 18, 32, 0.88);
+  background: rgba(255, 255, 255, 0.76);
+  border-color: rgba(15, 23, 42, 0.12);
+}
+
+.AdminRow.Head {
+  display: none;
+  background: rgba(255, 255, 255, 0.92);
+  color: rgba(11, 18, 32, 0.88);
+}
+
+@media (min-width: 900px) {
+  .AdminRow.Head {
+    display: grid;
+  }
+
+  .AdminRow {
+    grid-template-columns: minmax(100px, 1.1fr) minmax(90px, 0.9fr) 44px minmax(120px, 1.2fr) minmax(76px, 0.75fr) minmax(120px, 1fr) minmax(200px, 1.4fr);
+  }
+}
+
+.AdminEmail {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.AdminDate {
+  font-size: 12px;
+  color: rgba(11, 18, 32, 0.72);
+}
+
+.AdminActions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+.ButtonSm {
+  padding: 7px 10px;
+  font-size: 12px;
+  border-radius: 10px;
+  height: auto;
+}
+
+.AdminEmpty {
+  padding: 12px;
+}
+
+.AdminHint {
+  margin-top: 16px;
+  font-size: 12px;
+}
+
+.StatusPill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 900;
+  text-transform: capitalize;
+  border: 1px solid rgba(15, 23, 42, 0.12);
+  background: rgba(11, 18, 32, 0.06);
+  color: rgba(11, 18, 32, 0.82);
+}
+
+.StatusPill--pending {
+  border-color: rgba(245, 158, 11, 0.35);
+  background: rgba(245, 158, 11, 0.14);
+}
+
+.StatusPill--validated {
+  border-color: rgba(34, 197, 94, 0.4);
+  background: rgba(34, 197, 94, 0.14);
+}
+
+.StatusPill--rejected {
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.12);
+}
+
+@media (max-width: 760px) {
+  .Section {
+    margin-top: 14px;
+  }
+
+  .SectionTitle {
+    font-size: 20px;
+  }
+
+  .SectionSubtitle {
+    font-size: 12px;
+  }
+
+  .Card {
+    padding: 14px;
+  }
+
+  .InscriptionCard {
+    max-width: 100%;
+  }
+
+  .Field input,
+  .Field select,
+  .Field textarea {
+    font-size: 16px;
+  }
+}
+
+@media (max-width: 899px) {
+  .AdminRow {
+    gap: 6px;
+    padding: 12px;
+  }
+
+  .AdminCell {
+    display: grid;
+    grid-template-columns: 84px 1fr;
+    gap: 8px;
+    align-items: start;
+    font-size: 13px;
+    word-break: break-word;
+  }
+
+  .AdminCell::before {
+    content: attr(data-label);
+    font-size: 11px;
+    font-weight: 800;
+    color: rgba(11, 18, 32, 0.62);
+    text-transform: uppercase;
+    letter-spacing: 0.2px;
+  }
+
+  .AdminActions {
     justify-content: flex-start;
   }
 }

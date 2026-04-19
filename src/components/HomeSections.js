@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 function IconBubble({ children, variant = 'brand' }) {
   return (
@@ -239,7 +240,9 @@ export default function HomeSections() {
               </div>
             </div>
             <div className="Divider" />
-            <div className="Hint">We can connect this to WhatsApp or email later.</div>
+            <div className="Hint">
+              Prefer a full registration? <Link to="/inscription">Open the registration form</Link>.
+            </div>
           </div>
           <div className="Card">
             <div className="CardTitle">Send a message</div>

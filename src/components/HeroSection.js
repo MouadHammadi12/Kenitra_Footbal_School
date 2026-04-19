@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 export default function HeroSection() {
   return (
@@ -19,12 +20,12 @@ export default function HeroSection() {
             Join Kenitra Football School and become a professional player
           </p>
           <div className="Hero2Ctas">
-            <a className="Button ButtonPrimary" href="#contact">
+            <Link className="Button ButtonPrimary" to="/inscription">
               Join Now
-            </a>
-            <a className="Button ButtonGhost" href="#about">
+            </Link>
+            <Link className="Button ButtonGhost" to="/#about">
               Learn More
-            </a>
+            </Link>
           </div>
 
           <div className="Hero2Badges" aria-label="Highlights">
@@ -76,9 +77,9 @@ export default function HeroSection() {
               </div>
             </div>
             <div className="Divider" />
-            <a className="Button ButtonPrimary ButtonFull" href="#contact">
+            <Link className="Button ButtonPrimary ButtonFull" to="/inscription">
               Book a trial
-            </a>
+            </Link>
           </div>
         </div>
       </div>

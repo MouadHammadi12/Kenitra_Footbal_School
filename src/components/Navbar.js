@@ -1,11 +1,13 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 const NAV_LINKS = [
-  { href: '#home', label: 'Home' },
-  { href: '#about', label: 'About' },
-  { href: '#teams', label: 'Teams' },
-  { href: '#trainings', label: 'Trainings' },
-  { href: '#contact', label: 'Contact' },
+  { to: '/#home', label: 'Home' },
+  { to: '/#about', label: 'About' },
+  { to: '/#teams', label: 'Teams' },
+  { to: '/#trainings', label: 'Trainings' },
+  { to: '/inscription', label: 'Registration' },
+  { to: '/#contact', label: 'Contact' },
 ];
 
 export default function Navbar() {
@@ -21,7 +23,7 @@ export default function Navbar() {
 
   return (
     <header className="TopNav">
-      <div className="Brand" aria-label="Kenitra Football School">
+      <Link className="Brand" aria-label="Kenitra Football School" to="/">
         <div className="BrandLogoWrap" aria-hidden="true">
           <img className="BrandLogo" src="/logo.png" alt="" />
         </div>
@@ -29,20 +31,20 @@ export default function Navbar() {
           <div className="BrandName">Kenitra Football School</div>
           <div className="BrandTag">Académie • Formation • Performance</div>
         </div>
-      </div>
+      </Link>
 
       <nav className="NavLinks" aria-label="Navigation">
         {NAV_LINKS.map((l) => (
-          <a key={l.href} href={l.href}>
+          <Link key={l.to} to={l.to}>
             {l.label}
-          </a>
+          </Link>
         ))}
       </nav>
 
       <div className="NavActions">
-        <a className="Button ButtonPrimary" href="#contact">
+        <Link className="Button ButtonPrimary" to="/inscription">
           Join Now
-        </a>
+        </Link>
         <button
           type="button"
           className="Hamburger"
@@ -77,16 +79,16 @@ export default function Navbar() {
 
           <nav className="MobileLinks" aria-label="Mobile navigation">
             {NAV_LINKS.map((l) => (
-              <a key={l.href} href={l.href} onClick={() => setIsOpen(false)}>
+              <Link key={l.to} to={l.to} onClick={() => setIsOpen(false)}>
                 {l.label}
-              </a>
+              </Link>
             ))}
           </nav>
 
           <div className="MobileCta">
-            <a className="Button ButtonPrimary ButtonFull" href="#contact" onClick={() => setIsOpen(false)}>
+            <Link className="Button ButtonPrimary ButtonFull" to="/inscription" onClick={() => setIsOpen(false)}>
               Join Now
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,23 +1,16 @@
 import './App.css';
-import Navbar from './components/Navbar';
-import HeroSection from './components/HeroSection';
-import HomeSections from './components/HomeSections';
-import Footer from './components/Footer';
+import { Routes, Route } from 'react-router-dom';
+import HomePage from './pages/HomePage';
+import InscriptionPage from './pages/InscriptionPage';
+import AdminPage from './pages/AdminPage';
 
 function App() {
   return (
-    <div className="App">
-      <div className="Shell">
-        <Navbar />
-
-        <main className="Main">
-          <HeroSection />
-          <HomeSections />
-        </main>
-
-        <Footer />
-      </div>
-    </div>
+    <Routes>
+      <Route path="/" element={<HomePage />} />
+      <Route path="/inscription" element={<InscriptionPage />} />
+      <Route path="/admin" element={<AdminPage />} />
+    </Routes>
   );
 }
 
