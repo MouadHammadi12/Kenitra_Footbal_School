@@ -1,7 +1,9 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import {
+  addDoc,
   collection,
+  deleteDoc,
   doc,
   getDoc,
   onSnapshot,
@@ -27,6 +29,7 @@ function formatDate(ts) {
 }
 
 export default function AdminPage() {
+  const EMPTY_FORM = { fullName: '', phone: '', age: '', email: '' };
   const [user, setUser] = React.useState(undefined);
   const [adminOk, setAdminOk] = React.useState(false);
   const [authChecked, setAuthChecked] = React.useState(false);
@@ -36,6 +39,8 @@ export default function AdminPage() {
   const [loginBusy, setLoginBusy] = React.useState(false);
   const [loginErr, setLoginErr] = React.useState(null);
   const [updatingId, setUpdatingId] = React.useState(null);
+  const [adminForm, setAdminForm] = React.useState(EMPTY_FORM);
+  const [creating, setCreating] = React.useState(false);
 
   const firebaseReady = Boolean(auth && db);
 
@@ -128,6 +133,54 @@ export default function AdminPage() {
     }
   }
 
+  async function deleteInscription(id) {
+    setUpdatingId(id);
+    setLoginErr(null);
+    try {
+      await deleteDoc(doc(db, 'inscriptions', id));
+    } catch (err) {
+      setLoginErr({ text: err?.message || 'Delete failed.' });
+    } finally {
+      setUpdatingId(null);
+    }
+  }
+
+  function onAdminFormChange(e) {
+    const { name, value } = e.target;
+    setAdminForm((prev) => ({ ...prev, [name]: value }));
+  }
+
+  async function createInscriptionAsAdmin(e) {
+    e.preventDefault();
+    setLoginErr(null);
+    const ageNum = Number(adminForm.age);
+    if (!adminForm.fullName.trim() || !adminForm.phone.trim() || !adminForm.email.trim() || !Number.isFinite(ageNum)) {
+      setLoginErr({ text: 'Please fill all fields with a valid age.' });
+      return;
+    }
+    if (ageNum < 4 || ageNum > 99) {
+      setLoginErr({ text: 'Age must be between 4 and 99.' });
+      return;
+    }
+
+    setCreating(true);
+    try {
+      await addDoc(collection(db, 'inscriptions'), {
+        fullName: adminForm.fullName.trim(),
+        phone: adminForm.phone.trim(),
+        age: ageNum,
+        email: adminForm.email.trim().toLowerCase(),
+        status: 'pending',
+        createdAt: Timestamp.now(),
+      });
+      setAdminForm(EMPTY_FORM);
+    } catch (err) {
+      setLoginErr({ text: err?.message || 'Could not create inscription.' });
+    } finally {
+      setCreating(false);
+    }
+  }
+
   async function onLogout() {
     setLoginErr(null);
     await signOut(auth);
@@ -193,6 +246,60 @@ export default function AdminPage() {
                     Sign out
                   </button>
                 </div>
+
+                <div className="AdminCreateWrap">
+                  <div className="CardTitle">Add inscription as admin</div>
+                  <form className="Form AdminCreateForm" onSubmit={createInscriptionAsAdmin}>
+                    <label className="Field">
+                      <span>Full name</span>
+                      <input
+                        name="fullName"
+                        value={adminForm.fullName}
+                        onChange={onAdminFormChange}
+                        placeholder="Player full name"
+                        required
+                      />
+                    </label>
+                    <label className="Field">
+                      <span>Phone</span>
+                      <input
+                        name="phone"
+                        value={adminForm.phone}
+                        onChange={onAdminFormChange}
+                        placeholder="+212..."
+                        required
+                      />
+                    </label>
+                    <label className="Field">
+                      <span>Age</span>
+                      <input
+                        name="age"
+                        type="number"
+                        min={4}
+                        max={99}
+                        value={adminForm.age}
+                        onChange={onAdminFormChange}
+                        placeholder="Age"
+                        required
+                      />
+                    </label>
+                    <label className="Field">
+                      <span>Email</span>
+                      <input
+                        name="email"
+                        type="email"
+                        value={adminForm.email}
+                        onChange={onAdminFormChange}
+                        placeholder="email@example.com"
+                        required
+                      />
+                    </label>
+                    <button className="Button ButtonPrimary ButtonSm" type="submit" disabled={creating}>
+                      {creating ? 'Adding…' : 'Add inscription'}
+                    </button>
+                  </form>
+                </div>
+
                 {loginErr ? (
                   <p className="FormNotice FormNoticeErr" role="alert">
                     {loginErr.text}
@@ -251,16 +358,34 @@ export default function AdminPage() {
                               >
                                 Reject
                               </button>
+                              <button
+                                type="button"
+                                className="Button ButtonDanger ButtonSm"
+                                disabled={updatingId === r.id}
+                                onClick={() => deleteInscription(r.id)}
+                              >
+                                Delete
+                              </button>
                             </>
                           ) : (
-                            <button
-                              type="button"
-                              className="Button ButtonGhost ButtonSm"
-                              disabled={updatingId === r.id}
-                              onClick={() => setStatus(r.id, 'pending')}
-                            >
-                              Reset to pending
-                            </button>
+                            <>
+                              <button
+                                type="button"
+                                className="Button ButtonGhost ButtonSm"
+                                disabled={updatingId === r.id}
+                                onClick={() => setStatus(r.id, 'pending')}
+                              >
+                                Reset to pending
+                              </button>
+                              <button
+                                type="button"
+                                className="Button ButtonDanger ButtonSm"
+                                disabled={updatingId === r.id}
+                                onClick={() => deleteInscription(r.id)}
+                              >
+                                Delete
+                              </button>
+                            </>
                           )}
                         </span>
                       </div>

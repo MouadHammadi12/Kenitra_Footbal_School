@@ -305,6 +305,17 @@
   border-color: rgba(255, 255, 255, 0.22);
 }
 
+.ButtonDanger {
+  color: #fff;
+  border-color: rgba(239, 68, 68, 0.35);
+  background: rgba(239, 68, 68, 0.88);
+}
+
+.ButtonDanger:hover {
+  background: rgba(220, 38, 38, 0.95);
+  border-color: rgba(239, 68, 68, 0.5);
+}
+
 .ButtonFull {
   width: 100%;
 }
@@ -1300,6 +1311,20 @@
   margin-bottom: 14px;
 }
 
+.AdminCreateWrap {
+  margin-bottom: 14px;
+  padding: 12px;
+  border: 1px solid rgba(15, 23, 42, 0.1);
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.84);
+}
+
+.AdminCreateForm {
+  margin-top: 10px;
+  grid-template-columns: repeat(4, minmax(140px, 1fr)) auto;
+  align-items: end;
+}
+
 .AdminSignedIn {
   font-size: 13px;
   font-weight: 700;
@@ -1426,6 +1451,10 @@
   .Field select,
   .Field textarea {
     font-size: 16px;
+  }
+
+  .AdminCreateForm {
+    grid-template-columns: 1fr;
   }
 }
 

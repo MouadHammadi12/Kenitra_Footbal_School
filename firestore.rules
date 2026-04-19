@@ -19,7 +19,10 @@ service cloud.firestore {
 
     match /inscriptions/{docId} {
       allow create: if
-        request.resource.data.status == 'pending'
+        ((request.resource.data.status == 'pending') || (isAdminUser()
+          && (request.resource.data.status == 'pending'
+            || request.resource.data.status == 'validated'
+            || request.resource.data.status == 'rejected')))
         && request.resource.data.keys().hasOnly(['fullName', 'phone', 'age', 'email', 'status', 'createdAt'])
         && request.resource.data.fullName is string
         && request.resource.data.fullName.size() > 1
@@ -48,6 +51,8 @@ service cloud.firestore {
             || request.resource.data.status == 'validated'
             || request.resource.data.status == 'rejected')
         && request.resource.data.reviewedAt is timestamp;
+
+      allow delete: if isAdminUser();
     }
   }
 }
