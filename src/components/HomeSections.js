@@ -1,13 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
-
-function IconBubble({ children, variant = 'brand' }) {
-  return (
-    <div className={`IconBubble ${variant}`} aria-hidden="true">
-      {children}
-    </div>
-  );
-}
 
 export default function HomeSections() {
   return (
