@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { addDoc, collection, Timestamp } from 'firebase/firestore';
+import { addDoc, collection, Timestamp, query, or, where, getDocs } from 'firebase/firestore';
 import '../App.css';
 import Navbar from '../components/Navbar';
 import Footer from '../components/Footer';
@@ -24,22 +24,39 @@ export default function InscriptionPage() {
     setMsg(null);
 
     if (!canSubmit) {
-      setMsg({ type: 'err', text: 'Registration service is not ready yet. Please try again in a moment.' });
+      setMsg({ type: 'err', title: 'Service Unavailable', text: 'The registration system is initializing. Please try again in a few moments.' });
       return;
     }
 
     const ageNum = Number(form.age);
     if (!form.fullName.trim() || !form.phone.trim() || !form.email.trim() || !Number.isFinite(ageNum)) {
-      setMsg({ type: 'err', text: 'Please fill all fields with a valid age.' });
+      setMsg({ type: 'err', title: 'Missing Information', text: 'Please ensure all required fields are filled out correctly.' });
       return;
     }
     if (ageNum < 4 || ageNum > 99) {
-      setMsg({ type: 'err', text: 'Age must be between 4 and 99.' });
+      setMsg({ type: 'err', title: 'Invalid Entry', text: 'Participant age must be between 4 and 99 years.' });
       return;
     }
 
     setBusy(true);
     try {
+      // 1. Check for duplicates
+      const dupQuery = query(
+        collection(db, 'inscriptions'),
+        or(
+          where('email', '==', form.email.trim().toLowerCase()),
+          where('fullName', '==', form.fullName.trim())
+        )
+      );
+      const snap = await getDocs(dupQuery);
+
+      if (!snap.empty) {
+        setMsg({ type: 'err', title: 'Duplicate Record', text: 'A registration under this email address or full name already exists.' });
+        setBusy(false);
+        return;
+      }
+
+      // 2. If no duplicates, submit
       await addDoc(collection(db, 'inscriptions'), {
         fullName: form.fullName.trim(),
         phone: form.phone.trim(),
@@ -49,11 +66,11 @@ export default function InscriptionPage() {
         createdAt: Timestamp.now(),
       });
       setForm(INITIAL);
-      setMsg({ type: 'ok', text: 'Registration received. We will contact you soon.' });
+      setMsg({ type: 'ok', title: 'Application Submitted', text: 'Your registration has been successfully recorded. Our team will contact you shortly.' });
     } catch (err) {
-      setMsg({ type: 'err', text: err?.message || 'Something went wrong. Try again later.' });
+      setMsg({ type: 'err', title: 'Unexpected Error', text: err?.message || 'We encountered a problem processing your request. Please try again later.' });
     } finally {
-      setBusy(false);
+      if (busy) setBusy(false);
     }
   }
 
@@ -120,13 +137,23 @@ export default function InscriptionPage() {
                 </label>
 
                 {msg ? (
-                  <p className={msg.type === 'ok' ? 'FormNotice FormNoticeOk' : 'FormNotice FormNoticeErr'} role="status">
-                    {msg.text}
-                  </p>
+                  <div className={`PremiumAlert ${msg.type === 'ok' ? 'AlertSuccess' : 'AlertError'}`} role="status">
+                    <div className="AlertIcon">
+                      {msg.type === 'ok' ? (
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" /></svg>
+                      ) : (
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      )}
+                    </div>
+                    <div className="AlertContent">
+                      <div className="AlertTitle">{msg.title}</div>
+                      <div className="AlertText">{msg.text}</div>
+                    </div>
+                  </div>
                 ) : null}
 
                 <button className="Button ButtonPrimary ButtonFull" type="submit" disabled={busy}>
-                  {busy ? 'Sending…' : 'Submit registration'}
+                  {busy ? 'Processing...' : 'Submit registration'}
                 </button>
               </form>
 

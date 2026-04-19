@@ -11,6 +11,9 @@ import {
   query,
   Timestamp,
   updateDoc,
+  or,
+  where,
+  getDocs,
 } from 'firebase/firestore';
 import { onAuthStateChanged, signInWithEmailAndPassword, signOut } from 'firebase/auth';
 import '../App.css';
@@ -62,7 +65,7 @@ export default function AdminPage() {
       try {
         const snap = await getDoc(doc(db, 'admins', u.uid));
         if (!snap.exists()) {
-          setLoginErr({ text: 'This account is not an administrator.' });
+          setLoginErr({ title: 'Access Denied', text: 'The provided credentials do not hold administrator privileges.' });
           await signOut(auth);
           setUser(null);
           setAdminOk(false);
@@ -72,7 +75,7 @@ export default function AdminPage() {
           setAdminOk(true);
         }
       } catch (e) {
-        setLoginErr({ text: e?.message || 'Could not verify admin access.' });
+        setLoginErr({ title: 'Verification Failed', text: e?.message || 'Unable to validate administrator permissions.' });
         setUser(null);
         setAdminOk(false);
       } finally {
@@ -96,7 +99,7 @@ export default function AdminPage() {
         );
       },
       (err) => {
-        setLoginErr({ text: err?.message || 'Could not load registrations.' });
+        setLoginErr({ title: 'Data Synergy Error', text: err?.message || 'Could not load registrations from the server.' });
       }
     );
   }, [firebaseReady, user, adminOk]);
@@ -105,7 +108,7 @@ export default function AdminPage() {
     e.preventDefault();
     setLoginErr(null);
     if (!firebaseReady) {
-      setLoginErr({ text: 'Admin service is not ready yet. Please refresh and try again.' });
+      setLoginErr({ title: 'Service Unavailable', text: 'Admin service is not ready yet. Please refresh and try again.' });
       return;
     }
     setLoginBusy(true);
@@ -113,7 +116,7 @@ export default function AdminPage() {
       await signInWithEmailAndPassword(auth, loginEmail.trim(), loginPassword);
       setLoginPassword('');
     } catch (err) {
-      setLoginErr({ text: err?.message || 'Sign-in failed.' });
+      setLoginErr({ title: 'Authentication Failed', text: err?.message || 'Incorrect email or password. Please verify your credentials.' });
     } finally {
       setLoginBusy(false);
     }
@@ -128,7 +131,7 @@ export default function AdminPage() {
         reviewedAt: Timestamp.now(),
       });
     } catch (err) {
-      setLoginErr({ text: err?.message || 'Update failed.' });
+      setLoginErr({ title: 'Update Action Failed', text: err?.message || 'Could not modify the registration status.' });
     } finally {
       setUpdatingId(null);
     }
@@ -140,7 +143,7 @@ export default function AdminPage() {
     try {
       await deleteDoc(doc(db, 'inscriptions', id));
     } catch (err) {
-      setLoginErr({ text: err?.message || 'Delete failed.' });
+      setLoginErr({ title: 'Deletion Error', text: err?.message || 'The system could not remove this registration record.' });
     } finally {
       setUpdatingId(null);
     }
@@ -156,16 +159,32 @@ export default function AdminPage() {
     setLoginErr(null);
     const ageNum = Number(adminForm.age);
     if (!adminForm.fullName.trim() || !adminForm.phone.trim() || !adminForm.email.trim() || !Number.isFinite(ageNum)) {
-      setLoginErr({ text: 'Please fill all fields with a valid age.' });
+      setLoginErr({ title: 'Missing Information', text: 'Please complete all required fields.' });
       return;
     }
     if (ageNum < 4 || ageNum > 99) {
-      setLoginErr({ text: 'Age must be between 4 and 99.' });
+      setLoginErr({ title: 'Invalid Entry', text: 'Participant age must be between 4 and 99 years.' });
       return;
     }
 
     setCreating(true);
     try {
+      // 1. Check for duplicates
+      const dupQuery = query(
+        collection(db, 'inscriptions'),
+        or(
+          where('email', '==', adminForm.email.trim().toLowerCase()),
+          where('fullName', '==', adminForm.fullName.trim())
+        )
+      );
+      const snap = await getDocs(dupQuery);
+
+      if (!snap.empty) {
+        setLoginErr({ title: 'Duplicate Record', text: 'A registration under this email address or full name already exists.' });
+        setCreating(false);
+        return;
+      }
+
       await addDoc(collection(db, 'inscriptions'), {
         fullName: adminForm.fullName.trim(),
         phone: adminForm.phone.trim(),
@@ -176,7 +195,7 @@ export default function AdminPage() {
       });
       setAdminForm(EMPTY_FORM);
     } catch (err) {
-      setLoginErr({ text: err?.message || 'Could not create inscription.' });
+      setLoginErr({ title: 'Operation Failed', text: err?.message || 'Could not create new inscription.' });
     } finally {
       setCreating(false);
     }
@@ -259,9 +278,15 @@ export default function AdminPage() {
                     </div>
                   </label>
                   {loginErr ? (
-                    <p className="FormNotice FormNoticeErr" role="alert">
-                      {loginErr.text}
-                    </p>
+                    <div className="PremiumAlert AlertError" role="alert">
+                      <div className="AlertIcon">
+                        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                      </div>
+                      <div className="AlertContent">
+                        <div className="AlertTitle">{loginErr.title}</div>
+                        <div className="AlertText">{loginErr.text}</div>
+                      </div>
+                    </div>
                   ) : null}
                   <button className="Button ButtonPrimary ButtonFull" type="submit" disabled={loginBusy}>
                     {loginBusy ? 'Signing in…' : 'Sign in'}
@@ -334,9 +359,15 @@ export default function AdminPage() {
                 </div>
 
                 {loginErr ? (
-                  <p className="FormNotice FormNoticeErr" role="alert">
-                    {loginErr.text}
-                  </p>
+                  <div className="PremiumAlert AlertError" role="alert">
+                    <div className="AlertIcon">
+                      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    </div>
+                    <div className="AlertContent">
+                      <div className="AlertTitle">{loginErr.title}</div>
+                      <div className="AlertText">{loginErr.text}</div>
+                    </div>
+                  </div>
                 ) : null}
 
                 <div className="AdminTableWrap">
